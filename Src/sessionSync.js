@@ -2,9 +2,16 @@
 // (c) Eric M Barnard - (http://www.ericbarnard.com)
 // License: MIT (http://www.opensource.org/licenses/mit-license.php)
 
-(function ($) {
+/*properties
+_version, addEventHandler, callback, clearInterval, context, 
+countdownStart, events, one, priority, raiseEvent, refreshSessionRequest, 
+senseUserActivity, serverSessionRefreshed, sessionSync, sessionTimeOut, 
+setInterval, split, start, timeOutCountdown, 
+*/
 
-    var ss = {};
+(function (window, $) {
+
+    var ss = window.sessionSync = {};
     ss._version = '.09';
 
     var _lastActivityAt = new Date().getTime(),
@@ -15,13 +22,15 @@
         _inFinalCountdown = false,
         _finalCountDownSecs = 1000,
         _settings = {},
+        eventProp = '',
         _coreEvents = {
             'sessionTimeOut': '__ss_SessionTimeOutEvent__',
             'serverSessionRefreshed': '__ss_RefreshServerSession__',
             'countdownStart': '__ss_CountdownStart__',
             'timeOutCountdown': '__ss_TimeOutCountdown__',
             'senseUserActivity': '__ss_SenseUserActivity__'
-        }
+        };
+
 
     //==================== Session Refreshing ====================//
 
@@ -199,7 +208,7 @@
                 return callback;
             }
         };
-    })();
+    } ());
 
     var createEventSubscriberFunc = function (eventName) {
         //create closure
@@ -209,7 +218,7 @@
     };
 
     //============ Object Setup =================//
-    for (var eventProp in _coreEvents) {
+    for (eventProp in _coreEvents) {
 
         if (_coreEvents.hasOwnProperty(eventProp)) {
             // setup the event subscriber closure
@@ -243,6 +252,4 @@
         _checkSessionTimeIntervalID = window.setInterval(checkSessionTime, intervalTime);
 
     };
-
-    window.sessionSync = ss;
-})(jQuery, undefined);
+}(window, jQuery, undefined));
